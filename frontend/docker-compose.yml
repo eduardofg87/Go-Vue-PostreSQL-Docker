@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  node-build:
+    image: build-stage
+    environment:
+      POSTGRES_PASSWORD: "Postgres2019!"
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/var/lib/postgresql/data 
+    networks:
+      - node-nginx-network
+      
+  pgadmin-compose:
+    image: production-stage
+    ports:
+      - "8081:80"
+    depends_on:
+      - node-build
+    networks:
+      - node-nginx-network
+
+networks: 
+  node-nginx-network:
+    driver: bridge
